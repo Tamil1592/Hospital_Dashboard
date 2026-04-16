@@ -1,6 +1,6 @@
 # ============================================
 # ER COMMAND HOSPITAL CENTER
-# AIIMS + ML + GPS + FASTAPI SIMULATION
+# AIIMS + ML + FASTAPI + GPS SIMULATION
 # ============================================
 
 import streamlit as st
