@@ -1,6 +1,6 @@
 # ============================================
-# AIIMS ENTERPRISE ER COMMAND CENTER V4
-# WHO + AIIMS + REAL ML + FASTAPI + GPS
+# ER COMMAND HOSPITAL CENTER
+# AIIMS + ML + GPS + FASTAPI SIMULATION
 # ============================================
 
 import streamlit as st
@@ -19,7 +19,7 @@ from sklearn.model_selection import train_test_split
 # ============================================
 
 st.set_page_config(
-    page_title="AIIMS ER Command Center V4",
+    page_title="ER Command Hospital Center",
     layout="wide",
     page_icon="🏥"
 )
@@ -33,11 +33,11 @@ st_autorefresh(interval=10000, key="refresh_v4")
 st.markdown("""
 <style>
 [data-testid="stAppViewContainer"]{
-background:#070b18;
-color:white;
+    background:#070b18;
+    color:white;
 }
 [data-testid="stSidebar"]{
-background:#020617;
+    background:#020617;
 }
 </style>
 """, unsafe_allow_html=True)
@@ -82,7 +82,7 @@ def generate_data(n=800):
 df = generate_data()
 
 # ============================================
-# ML MODEL (ICU RISK PREDICTION)
+# ML MODEL (ICU PREDICTION)
 # ============================================
 
 X = df[["SeverityScore", "WaitingTime", "DoctorLoad", "BedsUsed"]]
@@ -148,7 +148,9 @@ st.plotly_chart(fig_risk, use_container_width=True)
 st.subheader("🏥 ICU Prediction Model")
 
 fig_icu = px.bar(
-    filtered.groupby("Department")["ICU_PRED"].sum(),
+    filtered.groupby("Department")["ICU_PRED"].sum().reset_index(),
+    x="Department",
+    y="ICU_PRED",
     title="Predicted ICU Demand"
 )
 
@@ -161,11 +163,11 @@ st.plotly_chart(fig_icu, use_container_width=True)
 c1, c2 = st.columns(2)
 
 with c1:
-    st.subheader("Severity")
+    st.subheader("Severity Distribution")
     st.plotly_chart(px.pie(filtered, names="Severity"), use_container_width=True)
 
 with c2:
-    st.subheader("ICU Prediction")
+    st.subheader("ICU Prediction Count")
     st.plotly_chart(px.bar(filtered["ICU_PRED"].value_counts()), use_container_width=True)
 
 # ============================================
@@ -251,4 +253,4 @@ st.dataframe(filtered.sort_values("RiskScore", ascending=False))
 # ============================================
 
 st.markdown("---")
-st.caption("AIIMS ER Command Center V4 | FULL AI + ML + FASTAPI + GPS SYSTEM")
+st.caption("ER Command Hospital Center | AI + ML + FASTAPI + GPS SYSTEM")
