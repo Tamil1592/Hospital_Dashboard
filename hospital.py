@@ -1,6 +1,6 @@
 # ============================================
 # ER COMMAND HOSPITAL CENTER
-# AIIMS + ML + FASTAPI + GPS SIMULATION
+# FULL AI + ML + FASTAPI + GPS DASHBOARD
 # ============================================
 
 import streamlit as st
@@ -24,6 +24,9 @@ st.set_page_config(
     page_icon="🏥"
 )
 
+# 🔥 MAIN TITLE
+st.title("🏥 ER Command Hospital Center")
+
 st_autorefresh(interval=10000, key="refresh_v4")
 
 # ============================================
@@ -33,11 +36,11 @@ st_autorefresh(interval=10000, key="refresh_v4")
 st.markdown("""
 <style>
 [data-testid="stAppViewContainer"]{
-    background:#070b18;
-    color:white;
+background:#070b18;
+color:white;
 }
 [data-testid="stSidebar"]{
-    background:#020617;
+background:#020617;
 }
 </style>
 """, unsafe_allow_html=True)
@@ -82,7 +85,7 @@ def generate_data(n=800):
 df = generate_data()
 
 # ============================================
-# ML MODEL (ICU PREDICTION)
+# ML MODEL
 # ============================================
 
 X = df[["SeverityScore", "WaitingTime", "DoctorLoad", "BedsUsed"]]
@@ -96,7 +99,7 @@ model.fit(X_train, y_train)
 df["ICU_PRED"] = model.predict(X)
 
 # ============================================
-# RISK SCORE ENGINE
+# RISK SCORE
 # ============================================
 
 df["RiskScore"] = (
@@ -106,7 +109,7 @@ df["RiskScore"] = (
 )
 
 # ============================================
-# SIDEBAR FILTERS
+# SIDEBAR
 # ============================================
 
 st.sidebar.title("⚙️ CONTROL CENTER")
@@ -122,7 +125,7 @@ filtered = df[
 ]
 
 # ============================================
-# KPI DASHBOARD
+# KPI
 # ============================================
 
 col1, col2, col3, col4 = st.columns(4)
@@ -133,7 +136,7 @@ col3.metric("Predicted ICU", filtered["ICU_PRED"].sum())
 col4.metric("Avg Risk", round(filtered["RiskScore"].mean(), 2))
 
 # ============================================
-# AI RISK CHART
+# RISK CHART
 # ============================================
 
 st.subheader("🧠 AI Patient Risk Scoring")
@@ -163,15 +166,15 @@ st.plotly_chart(fig_icu, use_container_width=True)
 c1, c2 = st.columns(2)
 
 with c1:
-    st.subheader("Severity Distribution")
+    st.subheader("Severity")
     st.plotly_chart(px.pie(filtered, names="Severity"), use_container_width=True)
 
 with c2:
-    st.subheader("ICU Prediction Count")
+    st.subheader("ICU Prediction")
     st.plotly_chart(px.bar(filtered["ICU_PRED"].value_counts()), use_container_width=True)
 
 # ============================================
-# 🚑 LIVE GPS MAP
+# MAP
 # ============================================
 
 st.subheader("🚑 Live Ambulance GPS Tracking")
@@ -226,7 +229,7 @@ st.plotly_chart(
 )
 
 # ============================================
-# ALERT SYSTEM
+# ALERTS
 # ============================================
 
 st.subheader("⚠️ Emergency AI Alerts")
@@ -241,7 +244,7 @@ if filtered["WaitingTime"].mean() > 90:
     st.warning("⚠️ QUEUE OVERFLOW RISK")
 
 # ============================================
-# LIVE TABLE
+# TABLE
 # ============================================
 
 st.subheader("📄 Live Patient Intelligence")
